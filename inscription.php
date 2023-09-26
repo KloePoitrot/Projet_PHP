@@ -89,14 +89,21 @@ if(isset($_POST['submit'])){
     <main>
         <h1>Inscription</h1>
         <?= $message?>
-        <form action="" method="post">
-            <input type="text" placeholder="Pseudo" name="username">
-            <input type="text" placeholder="Nom" name="nom">
-            <input type="text" placeholder="Prénom" name="prenom">
-            <input type="mail" placeholder="Email" name="email">
-            <input type="password" placeholder="Mot de passe" name="passw">
-            <input type="submit" name="submit" value="S'inscrire">
-        </form>
+        <?php if(!isset($_SESSION['token'])){?>
+            <form action="" method="post">
+                <input type="text" placeholder="Pseudo" name="username">
+                <input type="text" placeholder="Nom" name="nom">
+                <input type="text" placeholder="Prénom" name="prenom">
+                <input type="mail" placeholder="Email" name="email">
+                <input type="password" placeholder="Mot de passe" name="passw">
+                <input type="submit" name="submit" value="S'inscrire">
+            </form>
+        <?php }?>
+
+        <?php if(isset($_SESSION['token'])){?>
+            <p>Vous êtes déjà connecter.</p>
+            <a href="index.php?logout=true">Deconnexion</a>
+        <?php }?>
     </main>
 </body>
 </html>

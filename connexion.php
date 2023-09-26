@@ -66,6 +66,7 @@ if(isset($_POST['submit'])){
         <?php }?>
 
         <?php if(isset($_SESSION['token'])){?>
+            <p>Vous êtes déjà connecter.</p>
             <a href="index.php?logout=true">Deconnexion</a>
         <?php }?>
     </main>

@@ -34,7 +34,7 @@ if(isset($_POST['submit'])){
         }
 
         if($data){
-            if($data['niveau_compte'] == "admin"){
+            if($data['niveau_compte'] === "admin" || $data['niveau_compte'] === "moderateur"){
                 $token = password_hash('token', PASSWORD_DEFAULT);
                 $_SESSION['token'] = $token;
                 $_SESSION['id'] = $data['id_user'];
@@ -44,7 +44,7 @@ if(isset($_POST['submit'])){
                 $message = "<p>Connexion réussie!</p>";
             }
 
-            if($data['niveau_compte'] != "admin"){
+            if($data['niveau_compte'] != "admin" && $data['niveau_compte'] != "moderateur"){
                 $message = "<p>Votre compte n'a accès a ces informations. Veuillez vous connecter <a href='../connexion.php'>ici</a></p>";
             }
         }
@@ -64,24 +64,45 @@ if(isset($_POST['submit'])){
     <main>
         <?= $message?>
         <h1>Connexion admin</h1>
-        <?php if(empty($_SESSION['token'])){?>
-        <form action="" method="post">
-            <input type="text" name="info" placeholder="Pseudo ou Email">
-            <input type="password" name="passw" placeholder="Mot de passe">
-            <input type="submit" name="submit" value="Se connecter">
-        </form>
-        <?php }?>
+        <?php 
+        // Si on est pas connecté, affiché le formulaire de connexion
+            if(empty($_SESSION['token'])){
+        ?>
 
-        <?php if(isset($_SESSION['niveau'])){
+        
+            <form action="" method="post">
+                <input type="text" name="info" placeholder="Pseudo ou Email">
+                <input type="password" name="passw" placeholder="Mot de passe">
+                <input type="submit" name="submit" value="Se connecter">
+            </form>
+
+
+        <?php 
+            }
+            // Si connecté
+            if(isset($_SESSION['niveau'])){
+                // Si admin ou modérateur, affiche la deconnexion
                 if($_SESSION["niveau"] == "admin" || $_SESSION["niveau"] == "moderateur"){
             ?>
-            <a href="../index.php?logout=true">Deconnexion</a>
-        <?php }
-        if($_SESSION["niveau"] == "membre"){
+
+                <p>Vous êtes déjà connecter.</p>
+                <a href="../index.php?logout=true">Deconnexion</a>
+
+
+        <?php 
+            }
+            // Sinon demander la connexion
+            if($_SESSION["niveau"] != "admin" && $_SESSION["niveau"] != "moderateur"){
             ?>
-            <p>Vous n'avez pas access, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
-        <?php }
-        }?>
+
+
+                <p>Vous n'avez pas access, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
+
+
+        <?php 
+            }
+        }
+        ?>
     </main>
 </body>
 </html>
