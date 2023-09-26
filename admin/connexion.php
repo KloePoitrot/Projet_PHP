@@ -61,8 +61,8 @@ if(isset($_POST['submit'])){
 <body>
     <?php include_once "../modules/headeradmin.php" ?>
     <main>
-        <?= $message?>
         <h1>Connexion admin</h1>
+        <?= $message?>
         <?php 
         // Si on est pas connecté, affiché le formulaire de connexion
             if(empty($_SESSION['token'])){

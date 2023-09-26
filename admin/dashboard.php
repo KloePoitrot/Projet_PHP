@@ -41,8 +41,8 @@ session_start();
             <article>
                 <h2>Gestion</h2>
                 <ul>
-                    <li><a href="">Créer une nouvelle page</a></li>
-                    <li><a href="">Créer un nouvel article</a></li>
+                    <li><a href="newpage.php">Créer une nouvelle page</a></li>
+                    <li><a href="newarticle.php">Créer un nouvel article</a></li>
                     <li><a href="listeutilisateurs.php">Gérer les comptes utilisateur</a></li>
                 </ul>
             </article>

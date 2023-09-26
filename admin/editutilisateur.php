@@ -131,7 +131,7 @@ if(isset($_POST['submit'])){
         <?php 
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
+                if($_SESSION['niveau'] != "admin"){ 
         ?>
             <p>Access denied</p>
         <?php 

@@ -31,7 +31,7 @@ $message = null;
 
                 // Condition pur supprimer un compte
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                    if($_GET['delete'] == 'y'){
+                    if($_GET['delete'] == 'y' && $_SESSION['niveau'] == "admin"){
                         $idDelete = $_GET['id'];
                         $request = "DELETE FROM users WHERE id_user = :id";
                         $data = $db->prepare($request);
@@ -39,6 +39,10 @@ $message = null;
                             'id' => $idDelete,
                         ));
                         $message = "<p>Utilisateur supprimé!</p>";
+                    }
+                    
+                    if($_SESSION['niveau'] != "admin"){
+                        $message = "<p>Action non-authorisé.</p>";
                     }
                 }
 
