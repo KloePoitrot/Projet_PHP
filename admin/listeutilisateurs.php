@@ -58,7 +58,7 @@ session_start();
                         <td><?= $result["prenom_user"]?></td>
                         <td><?= $result["mail_user"]?></td>
                         <td><?= $result["niveau_compte"]?></td>
-                        <td><a href="">Modifier</a></td>
+                        <td><a href="editutilisateur.php?id=<?= $result["id_user"]?>">Modifier</a></td>
                         <td><a href="">Supprimer</a></td>
                     </tr>
                 <?php

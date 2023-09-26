@@ -43,7 +43,7 @@ session_start();
                 <ul>
                     <li><a href="">Créer une nouvelle page</a></li>
                     <li><a href="">Créer un nouvel article</a></li>
-                    <li><a href="">Gérer les comptes utilisateur</a></li>
+                    <li><a href="listeutilisateurs.php">Gérer les comptes utilisateur</a></li>
                 </ul>
             </article>
 
@@ -56,10 +56,13 @@ session_start();
                     </div>
                     <?php 
                         require_once "connect.php";
+                        // recupère les 5 dernières données
                         $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages ORDER BY id_page DESC LIMIT 5;");
+                        // execute les données
                         $data->execute();
                         $results = $data->fetchAll();
 
+                        // affiche les données
                         foreach($results as $result){
                             ?>
                                 <div>

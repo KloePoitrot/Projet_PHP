@@ -95,7 +95,7 @@ if(isset($_POST['submit'])){
             ?>
 
 
-                <p>Vous n'avez pas accès, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
+                <p>Vous n'avez pas accès, veuillez vous connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
 
 
         <?php 
