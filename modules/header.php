@@ -1,7 +1,7 @@
 <?php 
 $deco = null;
 if(isset($_SESSION['token'])){
-    $deco = "<li><a href='?logout=true'>Deconnexion</a></li>";
+    $deco = "<li><a href='index.php?logout=true'>Deconnexion</a></li>";
 }
 ?>
 

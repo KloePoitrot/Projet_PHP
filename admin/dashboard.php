@@ -8,6 +8,15 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
+    <style>
+        .display{
+            display:grid;
+            grid-template-columns: repeat(6, 1fr);
+        }
+        img{
+            width:50px
+        }
+    </style>
 </head>
 <body>
 <!DOCTYPE html>
@@ -40,28 +49,83 @@ session_start();
 
             <section>
                 <h2>Activité</h2>
-                <article>
+                <article class="display">
                     <div>
                         <h3>5 dernières pages</h3>
                         <a href="listepages.php">Tout afficher</a>
                     </div>
-                    <p>Afficher pages ici</p>
+                    <?php 
+                        require_once "connect.php";
+                        $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages ORDER BY id_page DESC LIMIT 5;");
+                        $data->execute();
+                        $results = $data->fetchAll();
+
+                        foreach($results as $result){
+                            ?>
+                                <div>
+                                    <img src="<?= $result['image_page']?>" alt="<?= $result['titre_page']?>">
+                                    <div>
+                                        <h3><?= $result['titre_page']?></h3>
+                                        <div>
+                                            <p><?= $result['date_page']?></p>
+                                            <p><?= $result['statut_page']?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php
+                        }
+                        ?>
                 </article>
 
-                <article>
+                <article class="display">
                     <div>
                         <h3>5 derniers articles</h3>
                         <a href="listearticles.php">Tout afficher</a>
                     </div>
-                    <p>Afficher articles ici</p>
+                    <?php 
+                        require_once "connect.php";
+                        $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC LIMIT 5;");
+                        $data->execute();
+                        $results = $data->fetchAll();
+
+                        foreach($results as $result){
+                            ?>
+                                <div>
+                                    <img src="<?= $result['image_article']?>" alt="<?= $result['titre_article']?>">
+                                    <div>
+                                        <h3><?= $result['titre_article']?></h3>
+                                        <div>
+                                            <p><?= $result['categorie_article']?></p>
+                                            <p><?= $result['statut_article']?></p>
+                                            <p><?= $result['date_article']?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php
+                        }
+                        ?>
                 </article>
 
-                <article>
+                <article class="display">
                     <div>
                         <h3>5 derniers utilisateurs</h3>
                         <a href="listeutilisateurs.php">Tout afficher</a>
                     </div>
-                    <p>Afficher utilisateurs ici</p>
+                    <?php 
+                        require_once "connect.php";
+                        $data = $db->prepare("SELECT id_user, pseudo_user, avatar_user FROM users ORDER BY id_user DESC LIMIT 5;");
+                        $data->execute();
+                        $results = $data->fetchAll();
+
+                        foreach($results as $result){
+                            ?>
+                                <div>
+                                    <img src="../<?= $result['avatar_user']?>" alt="<?= $result['pseudo_user']?>">
+                                    <p><?= $result['pseudo_user']?></p>
+                                </div>
+                        <?php
+                        }
+                        ?>
                 </article>
             </section>
 
