@@ -40,12 +40,11 @@ if(isset($_POST['submit'])){
                 $_SESSION['id'] = $data['id_user'];
                 $_SESSION['niveau'] = $data['niveau_compte'];
                 
-                // header ('location: index.php?login=true');
-                $message = "<p>Connexion réussie!</p>";
+                header ('location: dashboard.php');
             }
 
             if($data['niveau_compte'] != "admin" && $data['niveau_compte'] != "moderateur"){
-                $message = "<p>Votre compte n'a accès a ces informations. Veuillez vous connecter <a href='../connexion.php'>ici</a></p>";
+                $message = "<p>Votre compte n'a pas accès a ces informations. Veuillez vous connecter <a href='../connexion.php'>ici</a></p>";
             }
         }
     }
@@ -85,7 +84,7 @@ if(isset($_POST['submit'])){
                 if($_SESSION["niveau"] == "admin" || $_SESSION["niveau"] == "moderateur"){
             ?>
 
-                <p>Vous êtes déjà connecter.</p>
+                <p>Vous êtes déjà connecté.</p>
                 <a href="../index.php?logout=true">Deconnexion</a>
 
 
@@ -96,7 +95,7 @@ if(isset($_POST['submit'])){
             ?>
 
 
-                <p>Vous n'avez pas access, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
+                <p>Vous n'avez pas accès, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
 
 
         <?php 

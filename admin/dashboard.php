@@ -28,7 +28,6 @@ session_start();
         ?>
         
             <h1>Dashboard</h1>
-            <a href="../index.php?logout=true">Deconnexion</a>
             
             <article>
                 <h2>Gestion</h2>
@@ -59,7 +58,7 @@ session_start();
 
                 <article>
                     <div>
-                        <h3>5 derniers utilisateur</h3>
+                        <h3>5 derniers utilisateurs</h3>
                         <a href="listeutilisateurs.php">Tout afficher</a>
                     </div>
                     <p>Afficher utilisateurs ici</p>
@@ -69,9 +68,9 @@ session_start();
         <?php
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] == "admin" && $_SESSION['niveau'] == "moderateur"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
                 }
             }
@@ -79,7 +78,7 @@ session_start();
             // Refuser l'acces si personne n'est connecté
             if(empty($_SESSION['niveau'])){
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
             }
         ?>

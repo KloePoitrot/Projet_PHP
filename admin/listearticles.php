@@ -7,7 +7,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liste Utilisateurs</title>
+    <title>Liste articles</title>
     <style>
         img{
             width:50px
@@ -23,11 +23,11 @@ session_start();
                 if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
         ?>
         
-            <h1>Liste des comptes utilisateur</h1>
+            <h1>Liste des articles</h1>
             
             <?php 
                 require_once "connect.php";
-                $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users");
+                $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
@@ -36,12 +36,11 @@ session_start();
                     <thead>
                         <tr>
                             <th>ID</th>
-                            <th>Avatar</th>
-                            <th>Pseudo</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Email</th>
-                            <th>Niveau compte</th>
+                            <th>Titre</th>
+                            <th>Image</th>
+                            <th>Date de création</th>
+                            <th>Catégorie</th>
+                            <th>Statut</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,14 +50,14 @@ session_start();
                 foreach($results as $result){
                 ?>
                     <tr>
-                        <td><?= $result["id_user"]?></td>
-                        <td><img src="../<?= $result["avatar_user"]?>" alt="avatar de l'utilisateur <?= $result["pseudo_user"]?>"></td>
-                        <td><?= $result["pseudo_user"]?></td>
-                        <td><?= $result["nom_user"]?></td>
-                        <td><?= $result["prenom_user"]?></td>
-                        <td><?= $result["mail_user"]?></td>
-                        <td><?= $result["niveau_compte"]?></td>
-                        <td><a href="">Modifier</a></td>
+                        <td><?= $result["id_article"]?></td>
+                        <td><?= $result["titre_article"]?></td>
+                        <td><img src="../<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
+                        <td><?= $result["date_article"]?></td>
+                        <td><?= $result["categorie_article"]?></td>
+                        <td><?= $result["statut_article"]?></td>
+                        <td><a href="">Afficher</a></td>
+                        <td><a href="">Editer</a></td>
                         <td><a href="">Supprimer</a></td>
                     </tr>
                 <?php
@@ -73,9 +72,9 @@ session_start();
         <?php
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] == "admin" && $_SESSION['niveau'] == "moderateur"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
                 }
             }
@@ -83,7 +82,7 @@ session_start();
             // Refuser l'acces si personne n'est connecté
             if(empty($_SESSION['niveau'])){
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
             }
         ?>

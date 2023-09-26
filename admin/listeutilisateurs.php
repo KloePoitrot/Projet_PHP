@@ -73,9 +73,9 @@ session_start();
         <?php
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] == "admin" && $_SESSION['niveau'] == "moderateur"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
                 }
             }
@@ -83,7 +83,7 @@ session_start();
             // Refuser l'acces si personne n'est connecté
             if(empty($_SESSION['niveau'])){
         ?>
-            <p>Acces denied</p>
+            <p>Access denied</p>
         <?php 
             }
         ?>
