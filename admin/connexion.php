@@ -1,3 +1,57 @@
+<?php 
+session_start();
+$message = null;
+$isFormOk = true;
+if(isset($_POST['submit'])){
+    // test si le pseudo ou mail est correct
+    if(empty($_POST['info']) || strlen($_POST['info']) < 5){
+        $message = "<p>Pseudo ou email invalide (5 caractères minimum)</p>";
+        $isFormOk .= false;
+    }
+
+    // Teste si le mot de pass est correct
+    if(empty($_POST['passw']) || strlen($_POST['passw']) < 5){
+        $message .= "<p>Mot de passe invalide (5 caractères minimum)</p>";
+        $isFormOk = false;
+    }
+
+    if($isFormOk){
+        // Test si le mail ou le pseudo existe
+        $mailoupseudo = $_POST['info'];
+
+        require_once "connect.php";
+        $request = "SELECT id_user, mail_user, pseudo_user, niveau_compte FROM users WHERE mail_user = :mail or pseudo_user = :pseudo";
+        $request = $db->prepare($request);
+        $request->execute(array(
+            "mail" => $mailoupseudo,
+            "pseudo" => $mailoupseudo
+        ));
+        $data = $request->fetch();
+
+        if(!$data){
+            // Le mail ou pseudo ne correspondent pas
+            $message = "<p>Une erreur est survenue, veuillez vérifier vos informations.</p>";
+        }
+
+        if($data){
+            if($data['niveau_compte'] == "admin"){
+                $token = password_hash('token', PASSWORD_DEFAULT);
+                $_SESSION['token'] = $token;
+                $_SESSION['id'] = $data['id_user'];
+                $_SESSION['niveau'] = $data['niveau_compte'];
+                
+                // header ('location: index.php?login=true');
+                $message = "<p>Connexion réussie!</p>";
+            }
+
+            if($data['niveau_compte'] != "admin"){
+                $message = "<p>Votre compte n'a accès a ces informations. Veuillez vous connecter <a href='../connexion.php'>ici</a></p>";
+            }
+        }
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -6,14 +60,28 @@
     <title>Connexion admin</title>
 </head>
 <body>
-    <?php include "modules/header.php" ?>
+    <?php include_once "../modules/headeradmin.php" ?>
     <main>
+        <?= $message?>
         <h1>Connexion admin</h1>
+        <?php if(empty($_SESSION['token'])){?>
         <form action="" method="post">
-            <input type="text" placeholder="Pseudo ou Email">
-            <input type="password" placeholder="Mot de passe">
+            <input type="text" name="info" placeholder="Pseudo ou Email">
+            <input type="password" name="passw" placeholder="Mot de passe">
             <input type="submit" name="submit" value="Se connecter">
         </form>
+        <?php }?>
+
+        <?php if(isset($_SESSION['niveau'])){
+                if($_SESSION["niveau"] == "admin" || $_SESSION["niveau"] == "moderateur"){
+            ?>
+            <a href="../index.php?logout=true">Deconnexion</a>
+        <?php }
+        if($_SESSION["niveau"] == "membre"){
+            ?>
+            <p>Vous n'avez pas access, veuillez vou connecter en tant qu'admin. <a href="../index.php?logout=true">Deconnexion</a></p>
+        <?php }
+        }?>
     </main>
 </body>
 </html>

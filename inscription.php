@@ -1,4 +1,4 @@
-<?php 
+    <?php 
 session_start();
 // Initialisation des variables
 $isFormOk = true;
@@ -58,9 +58,6 @@ if(isset($_POST['submit'])){
 
         if(!$data){
             // Le mail et pseudo sont libre
-            if(empty($_POST['avatar'])){
-                $avatar = "images/avatarpardefaut.jpg";
-            }
             $pass = password_hash($_POST['passw'], PASSWORD_DEFAULT);
             $request = "INSERT INTO users(nom_user, prenom_user, mail_user, pseudo_user, pass_user, avatar_user, niveau_compte) VALUES(:nom, :prenom, :email, :pseudo, :passw, :avatar, :nivcompte)";
             $data = $db->prepare($request);
@@ -70,7 +67,7 @@ if(isset($_POST['submit'])){
                 'email' => $_POST['email'],
                 'pseudo' => $_POST['username'],
                 'passw' => $pass,
-                'avatar' => $avatar,
+                'avatar' => "images/avatar/avatarpardefaut.jpg",
                 'nivcompte' => "membre",
             ));
 
@@ -88,7 +85,7 @@ if(isset($_POST['submit'])){
     <title>Inscription</title>
 </head>
 <body>
-    <?php include "modules/header.php" ?>
+    <?php include_once "modules/header.php" ?>
     <main>
         <h1>Inscription</h1>
         <?= $message?>
@@ -98,8 +95,6 @@ if(isset($_POST['submit'])){
             <input type="text" placeholder="Prénom" name="prenom">
             <input type="mail" placeholder="Email" name="email">
             <input type="password" placeholder="Mot de passe" name="passw">
-            <label for="avatar">Avatar:</label>
-            <input type="file" name="avatar">
             <input type="submit" name="submit" value="S'inscrire">
         </form>
     </main>
