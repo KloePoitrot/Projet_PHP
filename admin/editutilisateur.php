@@ -119,6 +119,8 @@ if(isset($_POST['submit'])){
                 <input type="submit" name="submit" value="Modifier">
             </form>
 
+            <a href="listeutilisateurs.php?delete=y&id=<?= $dataDisplay["id_user"]?>">Supprimer l'utilisateur</a>
+
         <?php
                     }
                 }

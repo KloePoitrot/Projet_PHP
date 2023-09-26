@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$message = null;
 ?>
 
 <!DOCTYPE html>
@@ -16,6 +17,7 @@ session_start();
 </head>
 <body>
     <?php include_once "../modules/headeradmin.php"; ?>
+    <main>
     <?php 
             // Verifie si on est connecté
             if(!empty($_SESSION['niveau'])){
@@ -24,13 +26,28 @@ session_start();
         ?>
         
             <h1>Liste des comptes utilisateur</h1>
-            
             <?php 
                 require_once "connect.php";
+
+                // Condition pur supprimer un compte
+                if(isset($_GET['delete']) && isset($_GET['id'])){
+                    if($_GET['delete'] == 'y'){
+                        $idDelete = $_GET['id'];
+                        $request = "DELETE FROM users WHERE id_user = :id";
+                        $data = $db->prepare($request);
+                        $data->execute(array(
+                            'id' => $idDelete,
+                        ));
+                        $message = "<p>Utilisateur supprimé!</p>";
+                    }
+                }
+
+                // Affichage des utilisateurs
                 $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
+                <?= $message?>
                     
                 <table>
                     <thead>
@@ -59,7 +76,7 @@ session_start();
                         <td><?= $result["mail_user"]?></td>
                         <td><?= $result["niveau_compte"]?></td>
                         <td><a href="editutilisateur.php?id=<?= $result["id_user"]?>">Modifier</a></td>
-                        <td><a href="">Supprimer</a></td>
+                        <td><a href="?delete=y&id=<?= $result["id_user"]?>">Supprimer</a></td>
                     </tr>
                 <?php
                 }
@@ -87,5 +104,6 @@ session_start();
         <?php 
             }
         ?>
+        </main>
 </body>
 </html>
