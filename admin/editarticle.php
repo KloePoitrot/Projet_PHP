@@ -7,7 +7,6 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 $message = null;
 $isFormOk = true;
 if(isset($_POST['submit'])){
-    // Test d'envoi du pseudo
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
         $message .= "<p>Votre titre n'est pas assez long. (5 caractères minimum)</p>";
@@ -34,7 +33,6 @@ if(isset($_POST['submit'])){
 
     // Si tout est ok
     if($isFormOk){
-        // Le mail et pseudo sont libre
         $request = "UPDATE articles SET titre_article = :titre, contenu_article = :contenu,  categorie_article = :categorie, statut_article = :statut WHERE id_article = :id";
         $data = $db->prepare($request);
 
@@ -51,7 +49,7 @@ if(isset($_POST['submit'])){
     
     }
 }
-        // Recupère les données de l'utilisateur selectionné
+        // Recupère les données de l'article selectionné
         $reqDisplay = "SELECT titre_article, contenu_article, categorie_article, statut_article FROM articles WHERE id_article = :id";
         $reqDisplay = $db->prepare($reqDisplay);
         $reqDisplay->execute(array(
