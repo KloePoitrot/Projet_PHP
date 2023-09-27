@@ -7,6 +7,16 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 $message = null;
 $imgUpload = "";
 $isFormOk = true;
+
+        // Recupère les données de la page selectionné
+        $reqDisplay = "SELECT titre_page, contenu_page, statut_page, image_page FROM pages WHERE id_page = :id";
+        $reqDisplay = $db->prepare($reqDisplay);
+        $reqDisplay->execute(array(
+            "id" => $id,
+        ));
+        $dataDisplay = $reqDisplay->fetch();
+
+
 if(isset($_POST['submit'])){
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
@@ -29,7 +39,6 @@ if(isset($_POST['submit'])){
 
         // Test de l'image
         if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
-
             // Verification du mime
             $info = getimagesize($_FILES['image']['tmp_name']);
             // Il y a bien un fichier, verifie l'extention de l'image
@@ -42,19 +51,18 @@ if(isset($_POST['submit'])){
                 // sinon cest un echec
                 $message = "<p>L'image uploadée est invalide.</p>";
             }
-        } else {
-            $message = '<p>le fichier doit etre au format jpeg ou png.</p>';
         }
 
     // Si tout est ok
     if($isFormOk){
+        $img = !empty($_FILES['image']) ? $imgUpload : $dataDisplay['image_page'];
         $request = "UPDATE pages SET titre_page = :titre, image_page = :img, contenu_page = :contenu, statut_page = :statut WHERE id_page = :id";
         $data = $db->prepare($request);
 
         // Executer la requete avec les données
         $data->execute(array(
             "id" => $id,
-            "img" => $imgUpload,
+            "img" => $img,
             "titre" => $_POST['title'],
             "contenu" => $_POST['contenu'],
             "statut" => $_POST['statut'],
@@ -64,15 +72,6 @@ if(isset($_POST['submit'])){
     
     }
 }
-        // Recupère les données de la page selectionné
-        $reqDisplay = "SELECT titre_page, contenu_page, statut_page FROM pages WHERE id_page = :id";
-        $reqDisplay = $db->prepare($reqDisplay);
-        $reqDisplay->execute(array(
-            "id" => $id,
-        ));
-        $dataDisplay = $reqDisplay->fetch();
-
-
 ?>
 
 <!DOCTYPE html>

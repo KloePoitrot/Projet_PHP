@@ -7,6 +7,15 @@ $id = isset($_GET['id']) ? $_GET['id'] : null;
 $message = null;
 $imgUpload = "";
 $isFormOk = true;
+
+// Recupère les données de l'article selectionné
+$reqDisplay = "SELECT titre_article, contenu_article, categorie_article, statut_article, image_article FROM articles WHERE id_article = :id";
+$reqDisplay = $db->prepare($reqDisplay);
+$reqDisplay->execute(array(
+    "id" => $id,
+));
+$dataDisplay = $reqDisplay->fetch();
+
 if(isset($_POST['submit'])){
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
@@ -48,8 +57,6 @@ if(isset($_POST['submit'])){
             // sinon cest un echec
             $message = "<p>L'image uploadée est invalide.</p>";
         }
-    } else {
-        $message = '<p>le fichier doit etre au format jpeg ou png.</p>';
     }
     
 
@@ -57,13 +64,14 @@ if(isset($_POST['submit'])){
 
     // Si tout est ok
     if($isFormOk){
+        $img = isset($_FILES['image']) ? $imgUpload : $dataDisplay['image_article'];
         $request = "UPDATE articles SET titre_article = :titre, image_article = :img, contenu_article = :contenu,  categorie_article = :categorie, statut_article = :statut WHERE id_article = :id";
         $data = $db->prepare($request);
 
         // Executer la requete avec les données
         $data->execute(array(
             "id" => $id,
-            "img" => $imgUpload,
+            "img" => $img,
             "titre" => $_POST['title'],
             "contenu" => $_POST['contenu'],
             "categorie" => $_POST['categorie'],
@@ -74,13 +82,7 @@ if(isset($_POST['submit'])){
     
     }
 }
-        // Recupère les données de l'article selectionné
-        $reqDisplay = "SELECT titre_article, contenu_article, categorie_article, statut_article FROM articles WHERE id_article = :id";
-        $reqDisplay = $db->prepare($reqDisplay);
-        $reqDisplay->execute(array(
-            "id" => $id,
-        ));
-        $dataDisplay = $reqDisplay->fetch();
+        
 
 
 ?>
