@@ -16,6 +16,7 @@ $message = null;
     </style>
 </head>
 <body>
+    <main>
     <?php include_once "../modules/headeradmin.php"; ?>
     <?php 
             // Verifie si on est connecté
@@ -106,5 +107,6 @@ $message = null;
         <?php 
             }
         ?>
+    </main>
 </body>
 </html>

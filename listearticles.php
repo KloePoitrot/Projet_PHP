@@ -16,19 +16,12 @@ $message = null;
     </style>
 </head>
 <body>
-    <main>
-    <?php include_once "../modules/headeradmin.php"; ?>
-    <?php 
-            // Verifie si on est connecté
-            if(!empty($_SESSION['niveau'])){
-                // Verifie si le compte est de niveau admin ou moderateur
-                if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
-        ?>
-        
+    <?php include_once "modules/header.php"; ?>
+        <main>
             <h1>Liste des articles</h1>
             
             <?php 
-                require_once "connect.php";
+                require_once "admin/connect.php";
 
                 // Condition pur supprimer un compte
                 if(isset($_GET['delete']) && isset($_GET['id'])){
@@ -47,8 +40,10 @@ $message = null;
                 }
                 }
 
-                $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC");
-                $data->execute();
+                $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article FROM articles WHERE statut_article = :stat ORDER BY id_article DESC");
+                $data->execute(array(
+                    "stat" => 'publié',
+                ));
                 $results = $data->fetchAll();
                 ?>
                 <?= $message?>
@@ -56,12 +51,10 @@ $message = null;
                 <table>
                     <thead>
                         <tr>
-                            <th>ID</th>
                             <th>Titre</th>
                             <th>Image</th>
                             <th>Date de création</th>
                             <th>Catégorie</th>
-                            <th>Statut</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -71,42 +64,17 @@ $message = null;
                 foreach($results as $result){
                 ?>
                     <tr>
-                        <td><?= $result["id_article"]?></td>
                         <td><?= $result["titre_article"]?></td>
-                        <td><img src="../<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
+                        <td><img src="<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
                         <td><?= $result["date_article"]?></td>
                         <td><?= $result["categorie_article"]?></td>
-                        <td><?= $result["statut_article"]?></td>
-                        <td><a href="">Afficher</a></td>
-                        <td><a href="editarticle.php?id=<?= $result["id_article"]?>">Editer</a></td>
-                        <td><a href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
+                        <td><a href="detailarticle.php?id=<?= $result['id_article']?>">Voir l'article</a></td>
                     </tr>
                 <?php
                 }
                 ?>
                     </tbody>
                 </table>
-                
-                <?php
-            ?>
-
-        <?php
-                }
-                // Sinon refuser l'acces 
-                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
-        ?>
-            <p>Access denied</p>
-        <?php 
-                }
-            }
-
-            // Refuser l'acces si personne n'est connecté
-            if(empty($_SESSION['niveau'])){
-        ?>
-            <p>Access denied</p>
-        <?php 
-            }
-        ?>
     </main>
 </body>
 </html>

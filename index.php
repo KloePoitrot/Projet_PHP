@@ -31,8 +31,10 @@ include_once "admin/connect.php";
         <h1>Bienvenu!</h1>
 
         <?php 
-        $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC LIMIT 5;");
-        $data->execute();
+        $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article FROM articles WHERE statut_article = :stat ORDER BY id_article DESC LIMIT 5");
+        $data->execute(array(
+            "stat" => 'publié',
+        ));
         $results = $data->fetchAll();
 
         foreach($results as $result){
@@ -40,7 +42,7 @@ include_once "admin/connect.php";
                 <article>
                     <div>
                         <h3><?= $result['titre_article']?></h3>
-                        <a href="detailarticle.php?id=<?php $result['id_article']?>">Voir l'article</a>
+                        <a href="detailarticle.php?id=<?= $result['id_article']?>">Voir l'article</a>
                     </div>
                 </article>
         <?php

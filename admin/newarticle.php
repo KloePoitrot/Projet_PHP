@@ -81,23 +81,25 @@ if(isset($_POST['submit'])){
     <title>Créer un article</title>
 </head>
 <body>
-    <?php include_once "../modules/headeradmin.php"; ?>
-    <h1>Créer un article</h1>
-    <?= $message?>
-    <form action="" method="post" enctype="multipart/form-data">
-        <input type="text" name="title" placeholder="Titre">
-        <textarea name="contenu" placeholder="Contenu de votre article"></textarea>
-        <input type="text" name="categorie" placeholder="Catégorie">
-        <select name="statut" id="statut">
-            <option value="null">--- Selectionner un statut ---</option>
-            <option value="brouillon">Brouillon</option>
-            <option value="en attente">Final</option>
-        </select>
-        
-        <input type="file" name="image" id="image">
-        <input type="submit" name="submit" value="Envoyer">
+    <main>
+        <?php include_once "../modules/headeradmin.php"; ?>
+        <h1>Créer un article</h1>
+        <?= $message?>
+        <form action="" method="post" enctype="multipart/form-data">
+            <input type="text" name="title" placeholder="Titre">
+            <textarea name="contenu" placeholder="Contenu de votre article"></textarea>
+            <input type="text" name="categorie" placeholder="Catégorie">
+            <select name="statut" id="statut">
+                <option value="null">--- Selectionner un statut ---</option>
+                <option value="brouillon">Brouillon</option>
+                <option value="en attente">Final</option>
+            </select>
+            
+            <input type="file" name="image" id="image">
+            <input type="submit" name="submit" value="Envoyer">
 
 
-    </form>
+        </form>
+    </main>
 </body>
 </html>

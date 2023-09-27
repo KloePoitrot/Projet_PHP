@@ -72,6 +72,7 @@ if(isset($_POST['submit'])){
     </style>
 </head>
 <body>
+    <main>
     <?php include_once "../modules/headeradmin.php"; ?>
     <?php 
             // Verifie si on est connecté
@@ -124,5 +125,6 @@ if(isset($_POST['submit'])){
         <?php 
             }
         ?>
+    </main>
 </body>
 </html>
