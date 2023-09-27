@@ -1,7 +1,7 @@
 <?php 
 session_start();
 require_once "connect.php";
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? $_GET['id'] : null;
 
 $message = null;
 $isFormOk = true;
@@ -32,41 +32,22 @@ if(isset($_POST['submit'])){
 
     // Si tout est ok
     if($isFormOk){
-        // Test si le mail ou le pseudo existe
-        $mail = $_POST['mail'];
-        $pseudo = $_POST['pseudo'];
+        // Le mail et pseudo sont libre
+        $request = "UPDATE users SET nom_user = :nom,  prenom_user = :prenom, mail_user = :mail, pseudo_user = :pseudo, niveau_compte = :niveau WHERE id_user = :id";
+        $data = $db->prepare($request);
 
-        $request = "SELECT mail_user, pseudo_user FROM users WHERE (mail_user = :mail or pseudo_user = :pseudo) AND NOT id_user = :id";
-        $request = $db->prepare($request);
-        $request->execute(array(
-            "id" => $id,
-            "mail" => $mail,
-            "pseudo" => $pseudo
+        // Executer la requete avec les données
+        $data->execute(array(
+            "id" => $_POST['id'],
+            "nom" => $_POST['nom'],
+            "prenom" => $_POST['prenom'],
+            "mail" => $_POST['mail'],
+            "pseudo" => $_POST['pseudo'],
+            "niveau" => $_POST['niveaucompte'],
         ));
-        $data = $request->fetch();
 
-        if($data){
-            // Le mail ou pseudo sont deja utilisé
-            $message = "<p>Une erreur est survenue, veuillez vérifier vos informations.</p>";
-        }
-
-        if(!$data){
-            // Le mail et pseudo sont libre
-            $request = "UPDATE users SET nom_user = :nom,  prenom_user = :prenom, mail_user = :mail, pseudo_user = :pseudo, niveau_compte = :niveau WHERE id_user = :id";
-            $data = $db->prepare($request);
-
-            // Executer la requete avec les données
-            $data->execute(array(
-                "id" => $_POST['id'],
-                "nom" => $_POST['nom'],
-                "prenom" => $_POST['prenom'],
-                "mail" => $_POST['mail'],
-                "pseudo" => $_POST['pseudo'],
-                "niveau" => $_POST['niveaucompte'],
-            ));
-
-            $message = "<p>Utilisateur modifié!</p>";
-        }
+        $message = "<p>Utilisateur modifié!</p>";
+    
     }
 }
         // Recupère les données de l'utilisateur selectionné
@@ -76,8 +57,6 @@ if(isset($_POST['submit'])){
             "id" => $id,
         ));
         $dataDisplay = $reqDisplay->fetch();
-
-
 ?>
 
 <!DOCTYPE html>

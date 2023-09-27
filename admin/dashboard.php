@@ -66,7 +66,7 @@ session_start();
                         foreach($results as $result){
                             ?>
                                 <div>
-                                    <img src="<?= $result['image_page']?>" alt="<?= $result['titre_page']?>">
+                                    <img src="../<?= $result['image_page']?>" alt="<?= $result['titre_page']?>">
                                     <div>
                                         <h3><?= $result['titre_page']?></h3>
                                         <div>
@@ -94,7 +94,7 @@ session_start();
                         foreach($results as $result){
                             ?>
                                 <div>
-                                    <img src="<?= $result['image_article']?>" alt="<?= $result['titre_article']?>">
+                                    <img src="../<?= $result['image_article']?>" alt="<?= $result['titre_article']?>">
                                     <div>
                                         <h3><?= $result['titre_article']?></h3>
                                         <div>

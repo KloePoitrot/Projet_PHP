@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$message = null;
 ?>
 
 <!DOCTYPE html>
@@ -27,11 +28,32 @@ session_start();
             
             <?php 
                 require_once "connect.php";
+
+                // Condition pur supprimer une page
+                if(isset($_GET['delete']) && isset($_GET['id'])){
+                    if($_GET['delete'] == 'y' && $_SESSION['niveau'] == "admin"){
+                        $idDelete = $_GET['id'];
+                        $request = "DELETE FROM pages WHERE id_page = :id";
+                        $data = $db->prepare($request);
+                        $data->execute(array(
+                            'id' => $idDelete,
+                        ));
+                        $message = "<p>Page supprimée!</p>";
+                    }
+                    
+                    if($_SESSION['niveau'] != "admin"){
+                        $message = "<p>Action non-authorisé.</p>";
+                    }
+                }
+
+
                 $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
                     
+                <?= $message?>
+
                 <table>
                     <thead>
                         <tr>
@@ -55,8 +77,8 @@ session_start();
                         <td><?= $result["date_page"]?></td>
                         <td><?= $result["statut_page"]?></td>
                         <td><a href="">Afficher</a></td>
-                        <td><a href="">Editer</a></td>
-                        <td><a href="">Supprimer</a></td>
+                        <td><a href="editpage.php?id=<?= $result["id_page"]?>">Editer</a></td>
+                        <td><a href="?delete=y&id=<?= $result["id_page"]?>">Supprimer</a></td>
                     </tr>
                 <?php
                 }

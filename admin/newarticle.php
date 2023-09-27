@@ -22,7 +22,7 @@ if(isset($_POST['submit'])){
 
     // Test de la categorie
     if(empty($_POST['categorie']) || strlen($_POST['categorie']) < 5){
-        $message .= "<p>Catégorie n'est pas valable. (5 caractères minimum)</p>";
+        $message .= "<p>La catégorie n'est pas valable. (5 caractères minimum)</p>";
         $isFormOk = false;
     }
 
@@ -59,6 +59,7 @@ if(isset($_POST['submit'])){
     <title>Créer un article </title>
 </head>
 <body>
+    <?php include_once "../modules/headeradmin.php"; ?>
     <h1>Créer un article</h1>
     <?= $message?>
     <form action="" method="post">

@@ -1,5 +1,6 @@
 <?php 
 session_start();
+$message = null;
 ?>
 
 <!DOCTYPE html>
@@ -27,10 +28,29 @@ session_start();
             
             <?php 
                 require_once "connect.php";
+
+                // Condition pur supprimer un compte
+                if(isset($_GET['delete']) && isset($_GET['id'])){
+                if($_GET['delete'] == 'y' && $_SESSION['niveau'] == "admin"){
+                    $idDelete = $_GET['id'];
+                    $request = "DELETE FROM articles WHERE id_article = :id";
+                    $data = $db->prepare($request);
+                    $data->execute(array(
+                        'id' => $idDelete,
+                    ));
+                    $message = "<p>Article supprimé!</p>";
+                }
+
+                if($_SESSION['niveau'] != "admin"){
+                    $message = "<p>Action non-authorisé.</p>";
+                }
+                }
+
                 $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
+                <?= $message?>
                     
                 <table>
                     <thead>
@@ -57,8 +77,8 @@ session_start();
                         <td><?= $result["categorie_article"]?></td>
                         <td><?= $result["statut_article"]?></td>
                         <td><a href="">Afficher</a></td>
-                        <td><a href="">Editer</a></td>
-                        <td><a href="">Supprimer</a></td>
+                        <td><a href="editarticle.php?id=<?= $result["id_article"]?>">Editer</a></td>
+                        <td><a href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
                     </tr>
                 <?php
                 }
