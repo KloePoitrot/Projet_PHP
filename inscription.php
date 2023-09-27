@@ -1,6 +1,7 @@
     <?php 
 session_start();
 // Initialisation des variables
+$imgUpload = "images/avatar/avatarpardefaut.jpg";
 $isFormOk = true;
 $message = null;
 
@@ -36,6 +37,25 @@ if(isset($_POST['submit'])){
         $isFormOk = false;
     }
 
+    // Test de l'image
+    if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
+
+        // Verification du mime
+        $info = getimagesize($_FILES['image']['tmp_name']);
+        // Il y a bien un fichier, verifie l'extention de l'image
+        if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
+            // Genere un nom de fichier
+            $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            move_uploaded_file($_FILES['image']['tmp_name'], 'images/pages/'.$nom_fichier);
+            $imgUpload = 'images/pages/'.$nom_fichier;
+        } else {
+            // sinon cest un echec
+            $message = "<p>L'image uploadée est invalide.</p>";
+        }
+    } else {
+        $message = '<p>le fichier doit etre au format jpeg ou png.</p>';
+    }
+
     // Si tout est ok
     if($isFormOk){
         // Test si le mail ou le pseudo existe
@@ -67,7 +87,7 @@ if(isset($_POST['submit'])){
                 'email' => $_POST['email'],
                 'pseudo' => $_POST['username'],
                 'passw' => $pass,
-                'avatar' => "images/avatar/avatarpardefaut.jpg",
+                'avatar' => $imgUpload,
                 'nivcompte' => "membre",
             ));
 
@@ -90,12 +110,13 @@ if(isset($_POST['submit'])){
         <h1>Inscription</h1>
         <?= $message?>
         <?php if(!isset($_SESSION['token'])){?>
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 <input type="text" placeholder="Pseudo" name="username">
                 <input type="text" placeholder="Nom" name="nom">
                 <input type="text" placeholder="Prénom" name="prenom">
                 <input type="mail" placeholder="Email" name="email">
                 <input type="password" placeholder="Mot de passe" name="passw">
+                <input type="file" name="image" id="image">
                 <input type="submit" name="submit" value="S'inscrire">
             </form>
         <?php }?>

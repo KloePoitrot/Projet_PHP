@@ -78,7 +78,7 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Créer un article </title>
+    <title>Créer un article</title>
 </head>
 <body>
     <?php include_once "../modules/headeradmin.php"; ?>
