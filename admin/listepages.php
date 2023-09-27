@@ -47,7 +47,7 @@ $message = null;
                 }
 
 
-                $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages");
+                $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages ORDER BY id_page DESC");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>

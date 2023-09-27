@@ -46,7 +46,7 @@ $message = null;
                 }
                 }
 
-                $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles");
+                $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
