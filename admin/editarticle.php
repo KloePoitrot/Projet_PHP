@@ -103,8 +103,8 @@ if(isset($_POST['submit'])){
             // Verifie si on est connecté
             if(!empty($_SESSION['niveau'])){
                 // Verifie si le compte est de niveau admin ou moderateur
-                if($_SESSION['niveau'] == "admin"){    
-                    if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT)){
+                if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur"){    
+                    if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT) && $dataDisplay){
                     ?>
                     
                         <h1>Modification de l'article</h1>
@@ -136,13 +136,13 @@ if(isset($_POST['submit'])){
                     }
                 }
                 // Sinon refuser l'acces 
-                if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false){ 
+                if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$dataDisplay){ 
         ?>
             <p>Aucun article sélectionné.</p>
         <?php 
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] != "admin"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
             <p>Access denied</p>
         <?php 

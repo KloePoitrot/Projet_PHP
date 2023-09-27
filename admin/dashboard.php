@@ -34,6 +34,7 @@ session_start();
             if(!empty($_SESSION['niveau'])){
                 // Verifie si le compte est de niveau admin ou moderateur
                 if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
+                    require_once "connect.php";
         ?>
         
             <h1>Dashboard</h1>
@@ -55,7 +56,6 @@ session_start();
                         <a href="listepages.php">Tout afficher</a>
                     </div>
                     <?php 
-                        require_once "connect.php";
                         // recupère les 5 dernières données
                         $data = $db->prepare("SELECT id_page, titre_page, image_page, date_page, statut_page FROM pages ORDER BY id_page DESC LIMIT 5;");
                         // execute les données
@@ -86,7 +86,6 @@ session_start();
                         <a href="listearticles.php">Tout afficher</a>
                     </div>
                     <?php 
-                        require_once "connect.php";
                         $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC LIMIT 5;");
                         $data->execute();
                         $results = $data->fetchAll();
@@ -115,7 +114,6 @@ session_start();
                         <a href="listeutilisateurs.php">Tout afficher</a>
                     </div>
                     <?php 
-                        require_once "connect.php";
                         $data = $db->prepare("SELECT id_user, pseudo_user, avatar_user FROM users ORDER BY id_user DESC LIMIT 5;");
                         $data->execute();
                         $results = $data->fetchAll();

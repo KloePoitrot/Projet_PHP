@@ -78,8 +78,8 @@ if(isset($_POST['submit'])){
             if(!empty($_SESSION['niveau'])){
                 // Verifie si le compte est de niveau admin ou moderateur
                 if($_SESSION['niveau'] == "admin"){    
-                    if(isset($_GET['id'])){
-        ?>
+                    if(isset($_GET['id']) && $dataDisplay){
+            ?>
         
             <h1>Modification de l'utilisateur</h1>
             <?= $message?>
@@ -104,7 +104,7 @@ if(isset($_POST['submit'])){
                     }
                 }
                 // Sinon refuser l'acces 
-                if(!isset($_GET['id'])){ 
+                if(!isset($_GET['id']) || !$dataDisplay){ 
         ?>
             <p>Aucun utilisateur sélectionné.</p>
         <?php 

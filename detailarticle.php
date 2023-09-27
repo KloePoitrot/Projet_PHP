@@ -24,7 +24,7 @@ $dataDisplay = $reqDisplay->fetch();
     <?php include_once "modules/header.php"; ?>
     
     <?php 
-    if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT)){
+    if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT) && $dataDisplay){
         ?>
     <article>
         <div>
@@ -39,12 +39,12 @@ $dataDisplay = $reqDisplay->fetch();
 
 <?php }
 
-if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false){
+if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$dataDisplay){
 
 ?>
 
     <h2>Erreur!</h2>
-    <p>Aucun artice sélectionné. <a href="index.php">Accueil</a></p>
+    <p>Aucun article sélectionné. <a href="index.php">Accueil</a></p>
 
 <?php 
 } 

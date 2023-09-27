@@ -77,21 +77,8 @@ if(isset($_POST['submit'])){
         }
 
         if(!$data){
-            // Le mail et pseudo sont libre
-            $pass = password_hash($_POST['passw'], PASSWORD_DEFAULT);
-            $request = "INSERT INTO users(nom_user, prenom_user, mail_user, pseudo_user, pass_user, avatar_user, niveau_compte) VALUES(:nom, :prenom, :email, :pseudo, :passw, :avatar, :nivcompte)";
-            $data = $db->prepare($request);
-            $data->execute(array(
-                'nom' => $_POST['nom'],
-                'prenom' => $_POST['prenom'],
-                'email' => $_POST['email'],
-                'pseudo' => $_POST['username'],
-                'passw' => $pass,
-                'avatar' => $imgUpload,
-                'nivcompte' => "membre",
-            ));
+            
 
-            $message = "<p>Formulaire envoyé</p>";
         }
     }
 }

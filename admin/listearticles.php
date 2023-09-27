@@ -31,7 +31,7 @@ $message = null;
 
                 // Condition pur supprimer un compte
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                if($_GET['delete'] == 'y' && $_SESSION['niveau'] == "admin"){
+                if($_GET['delete'] == 'y'){
                     $idDelete = $_GET['id'];
                     $request = "DELETE FROM articles WHERE id_article = :id";
                     $data = $db->prepare($request);

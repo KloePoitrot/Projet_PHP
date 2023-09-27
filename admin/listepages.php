@@ -31,7 +31,7 @@ $message = null;
 
                 // Condition pur supprimer une page
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                    if($_GET['delete'] == 'y' && $_SESSION['niveau'] == "admin"){
+                    if($_GET['delete']){
                         $idDelete = $_GET['id'];
                         $request = "DELETE FROM pages WHERE id_page = :id";
                         $data = $db->prepare($request);
