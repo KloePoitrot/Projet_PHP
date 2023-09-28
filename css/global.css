@@ -185,6 +185,23 @@ a.button.btndelete{
     object-fit:cover;
 }
 
+/* ARTICLE PAGINATION */
+.pagination{
+    list-style: none;
+    display:flex;
+    justify-content: center;
+    gap:10px;
+    margin-top:1rem;
+}
+.disabled a{
+    pointer-events: none;
+    color:var(--background)!important;
+}
+.active a{
+    pointer-events: none;
+    color:var(--background)!important;
+}
+
 /* ARTICLES & PAGES ADMIN */
 .display{
     display:grid;
