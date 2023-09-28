@@ -108,7 +108,7 @@ if(isset($_POST['submit'])){
                         <textarea name="contenu"><?= $dataDisplay['contenu_page']?></textarea>
                         <label for="pseudo">Statut:</label>
                         <select name="statut" id="statut">
-                            <option value="<?= $dataDisplay['categorie_article']?>"><?= $dataDisplay['categorie_article']?>-</option>
+                            <option value="<?= $dataDisplay['statut_page']?>"><?= $dataDisplay['statut_page']?></option>
                             <option value="brouillon">Brouillon</option>
                             <option value="en attente">En attente</option>
                             <option value="publié">Publier</option>
