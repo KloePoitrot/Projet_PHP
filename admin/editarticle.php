@@ -15,7 +15,7 @@ $reqDisplay->execute(array(
 ));
 $dataDisplay = $reqDisplay->fetch();
 
-$imgUpload = $dataDisplay['image_article'];
+$imgUpload = isset($dataDisplay['image_article']) ? $dataDisplay['image_article'] : null;
 if(isset($_POST['submit'])){
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
@@ -48,23 +48,23 @@ if(isset($_POST['submit'])){
     }
 
 
-        // Test de l'image
-        if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
-            if($isFormOk){
-                // Verification du mime
-                $info = getimagesize($_FILES['image']['tmp_name']);
-                // Il y a bien un fichier, verifie l'extention de l'image
-                if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
-                    // Genere un nom de fichier
-                    $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                    move_uploaded_file($_FILES['image']['tmp_name'], '../images/pages/'.$nom_fichier);
-                    $imgUpload = 'images/pages/'.$nom_fichier;
-                } else {
-                    // sinon cest un echec
-                    $message = "<p class='warning'>L'image uploadée est invalide.</p>";
-                }
+    // Test de l'image
+    if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
+        if($isFormOk){
+            // Verification du mime
+            $info = getimagesize($_FILES['image']['tmp_name']);
+            // Il y a bien un fichier, verifie l'extention de l'image
+            if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
+                // Genere un nom de fichier
+                $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                move_uploaded_file($_FILES['image']['tmp_name'], '../images/pages/'.$nom_fichier);
+                $imgUpload = 'images/pages/'.$nom_fichier;
+            } else {
+                // sinon cest un echec
+                $message = "<p class='warning'>L'image uploadée est invalide.</p>";
             }
         }
+    }
     
 
 
@@ -151,7 +151,13 @@ if(isset($_POST['submit'])){
                             <input type="hidden" name="id" value="<?= $_GET['id']?>">
                             <input type="submit" name="submit" value="Envoyer">
                         </form>
-                        <a class="button btndelete" href="listearticles.php?delete=y&id=<?= $_GET['id']?>">Supprimer l'article</a>
+                        <?php 
+                            if($_SESSION['niveau'] == 'admin'){
+                                ?>
+                            <a class="button btndelete" href="listepages.php?delete=y&id=<?= $_GET['id']?>">Supprimer l'article</a>
+                                <?php
+                            }
+                        ?>
 
         <?php
                     }

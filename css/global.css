@@ -229,7 +229,7 @@ a.button.btndelete{
     display:grid;
     grid-template-columns: 1fr 2fr;
     gap:30px;
-    position:sticky;
+    position:sticky!important;
     top:0
 }
 .imgArticle div{

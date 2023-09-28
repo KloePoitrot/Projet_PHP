@@ -33,14 +33,16 @@ $message = null;
 
                 // Condition pur supprimer une page
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                    if($_GET['delete']){
-                        $idDelete = $_GET['id'];
-                        $request = "DELETE FROM pages WHERE id_page = :id";
-                        $data = $db->prepare($request);
-                        $data->execute(array(
-                            'id' => $idDelete,
-                        ));
-                        $message = "<p class='success'>Page supprimée!</p>";
+                    if($_SESSION['niveau'] == "admin"){
+                        if($_GET['delete']){
+                            $idDelete = $_GET['id'];
+                            $request = "DELETE FROM pages WHERE id_page = :id";
+                            $data = $db->prepare($request);
+                            $data->execute(array(
+                                'id' => $idDelete,
+                            ));
+                            $message = "<p class='success'>Page supprimée!</p>";
+                        }
                     }
                     
                     if($_SESSION['niveau'] != "admin"){
@@ -80,7 +82,13 @@ $message = null;
                         <td><?= $result["statut_page"]?></td>
                         <td><a class="button" href="../detailpage.php?id=<?= $result["id_page"]?>">Afficher</a></td>
                         <td><a class="button" href="editpage.php?id=<?= $result["id_page"]?>">Editer</a></td>
+                        <?php 
+                            if($_SESSION['niveau'] == 'admin'){
+                                ?>
                         <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_page"]?>">Supprimer</a></td>
+                                <?php
+                            }
+                        ?>
                     </tr>
                 <?php
                 }

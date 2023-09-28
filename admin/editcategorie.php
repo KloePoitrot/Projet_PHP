@@ -40,6 +40,20 @@ if(isset($_POST['submit'])){
 
         if(!$data){
             // La catégorie n'existe pas
+
+            // selectionne les articles sous cette catégorie
+            $cate = $dataDisplay['nom_cat'];
+            $request = "UPDATE articles SET categorie_article = :cat WHERE categorie_article = :cate";
+            $data = $db->prepare($request);
+
+            // Executer la requete avec les données
+            $data->execute(array(
+                "cate" => $cate,
+                "cat" => $_POST['nom']
+            ));
+
+
+            //change le nom de la catégorie
             $request = "UPDATE categories SET nom_cat = :nom WHERE id_cat = :id";
             $data = $db->prepare($request);
 
@@ -90,7 +104,13 @@ if(isset($_POST['submit'])){
 
 
                     </form>
+                    <?php 
+                        if($_SESSION['niveau'] == 'admin'){
+                            ?>
                         <a class="button btndelete" href="listecategories.php?delete=y&id=<?= $_GET['id']?>">Supprimer la catégorie</a>
+                            <?php
+                        }
+                    ?>
 
         <?php
                     }
@@ -98,11 +118,11 @@ if(isset($_POST['submit'])){
                 // Sinon refuser l'acces 
                 if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$dataDisplay){ 
         ?>
-            <p>Aucun page sélectionnée.</p>
+            <p>Aucune catégorie sélectionnée.</p>
         <?php 
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] == "moderateur"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
             <p>Access denied</p>
         <?php 

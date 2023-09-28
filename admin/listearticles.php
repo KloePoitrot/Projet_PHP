@@ -31,21 +31,23 @@ $message = null;
             <?php 
                 require_once "connect.php";
 
-                // Condition pur supprimer un compte
+                // Condition pur supprimer un article
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                if($_GET['delete'] == 'y'){
-                    $idDelete = $_GET['id'];
-                    $request = "DELETE FROM articles WHERE id_article = :id";
-                    $data = $db->prepare($request);
-                    $data->execute(array(
-                        'id' => $idDelete,
-                    ));
-                    $message = "<p class='success'>Article supprimé!</p>";
-                }
+                    if($_SESSION['niveau'] == "admin"){
+                        if($_GET['delete'] == 'y'){
+                            $idDelete = $_GET['id'];
+                            $request = "DELETE FROM articles WHERE id_article = :id";
+                            $data = $db->prepare($request);
+                            $data->execute(array(
+                                'id' => $idDelete,
+                            ));
+                            $message = "<p class='success'>Article supprimé!</p>";
+                        }
+                    }
 
-                if($_SESSION['niveau'] != "admin"){
-                    $message = "<p class='warning'>Action non-authorisé.</p>";
-                }
+                    if($_SESSION['niveau'] != "admin"){
+                        $message = "<p class='warning'>Action non-authorisé.</p>";
+                    }
                 }
 
                 $data = $db->prepare("SELECT id_article, titre_article, image_article, date_article, categorie_article, statut_article FROM articles ORDER BY id_article DESC");
@@ -80,7 +82,13 @@ $message = null;
                         <td><?= $result["statut_article"]?></td>
                         <td><a class="button" href="../detailarticle.php?id=<?= $result["id_article"]?>">Afficher</a></td>
                         <td><a class="button" href="editarticle.php?id=<?= $result["id_article"]?>">Editer</a></td>
-                        <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
+                        <?php 
+                            if($_SESSION['niveau'] == 'admin'){
+                                ?>
+                                <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
+                                <?php
+                            }
+                        ?>
                     </tr>
                 <?php
                 }

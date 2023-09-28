@@ -48,7 +48,7 @@ $message = null;
                 }
 
                 // Affichage des utilisateurs
-                $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users ORDER BY id_user DESC");
+                $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
@@ -81,7 +81,13 @@ $message = null;
                         <td><?= $result["mail_user"]?></td>
                         <td><?= $result["niveau_compte"]?></td>
                         <td><a class="button" href="editutilisateur.php?id=<?= $result["id_user"]?>">Modifier</a></td>
+                        <?php 
+                            if($_SESSION['niveau'] == 'admin'){
+                                ?>
                         <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_user"]?>">Supprimer</a></td>
+                                <?php
+                            }
+                        ?>
                     </tr>
                 <?php
                 }

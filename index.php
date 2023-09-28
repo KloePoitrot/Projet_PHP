@@ -29,7 +29,7 @@ include_once "admin/connect.php";
     <?php include_once "modules/header.php" ?>
     <main>
         <?= $success?>
-        <h1 class="header">Bienvenu!</h1>
+        <h1 class="header">Bienvenue!</h1>
 
         <div class="articles">
             <?php 

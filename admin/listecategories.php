@@ -33,14 +33,34 @@ $message = null;
 
                 // Condition pur supprimer une page
                 if(isset($_GET['delete']) && isset($_GET['id'])){
-                    if($_GET['delete']){
-                        $idDelete = $_GET['id'];
-                        $request = "DELETE FROM categories WHERE id_cat = :id";
-                        $data = $db->prepare($request);
-                        $data->execute(array(
-                            'id' => $idDelete,
-                        ));
-                        $message = "<p class='success'>Catégorie supprimée!</p>";
+                    if($_SESSION['niveau'] == "admin"){
+                        if($_GET['delete'] && $_GET['id'] != '0'){
+                            $idDelete = $_GET['id'];
+                            // Selectionne le nom de la catégorie a supprimer
+                            $reqDisplay = "SELECT nom_cat FROM categories WHERE id_cat = :id";
+                            $reqDisplay = $db->prepare($reqDisplay);
+                            $reqDisplay->execute(array(
+                                "id" => $idDelete,
+                            ));
+                            $dataDisplay = $reqDisplay->fetch();
+
+                            // selectionne les articles sous cette catégorie
+                            $request = "UPDATE articles SET categorie_article = :cat WHERE categorie_article = :cate";
+                            $data = $db->prepare($request);
+
+                            $data->execute(array(
+                                "cate" => $dataDisplay['nom_cat'],
+                                "cat" => 'Sans Catégorie'
+                            ));
+                            
+                            // Supprime la catégorie
+                            $request = "DELETE FROM categories WHERE id_cat = :id";
+                            $data = $db->prepare($request);
+                            $data->execute(array(
+                                'id' => $idDelete,
+                            ));
+                            $message = "<p class='success'>Catégorie supprimée!</p>";
+                        }
                     }
                     
                     if($_SESSION['niveau'] != "admin"){
@@ -49,7 +69,7 @@ $message = null;
                 }
 
 
-                $data = $db->prepare("SELECT id_cat, nom_cat FROM categories ORDER BY id_cat DESC");
+                $data = $db->prepare("SELECT id_cat, nom_cat FROM categories WHERE NOT id_cat = 0 ORDER BY id_cat DESC");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
@@ -62,7 +82,13 @@ $message = null;
                     <tr>
                         <td><?= $result["nom_cat"]?></td>
                         <td><a class="button" href="editcategorie.php?id=<?= $result["id_cat"]?>">Editer</a></td>
+                        <?php 
+                            if($_SESSION['niveau'] == 'admin'){
+                                ?>
                         <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_cat"]?>">Supprimer</a></td>
+                                <?php
+                            }
+                        ?>
                     </tr>
                 <?php
                 }

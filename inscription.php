@@ -36,10 +36,6 @@ if(isset($_POST['submit'])){
         $message .= "<p class='warning'>Le mot de passe est invalide (5 caractères minimum)</p>";
         $isFormOk = false;
     }
-    if($_POST['psswconf'] !== $_POST['passw']){
-        $message .= "<p class='warning'>Les mots de passe ne correspondent pas</p>";
-        $isFormOk = false;
-    }
 
     // Test de l'image
     if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
@@ -121,7 +117,6 @@ if(isset($_POST['submit'])){
                 <input type="text" placeholder="Prénom" name="prenom">
                 <input type="mail" placeholder="Email" name="email">
                 <input type="password" placeholder="Mot de passe" name="passw">
-                <input type="password" placeholder="Confirmation de mot de passe" name="psswconf">
                 <input type="file" name="image" id="image">
                 <input type="submit" name="submit" value="S'inscrire">
             </form>

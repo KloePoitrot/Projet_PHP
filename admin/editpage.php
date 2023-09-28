@@ -16,7 +16,7 @@ $isFormOk = true;
         $dataDisplay = $reqDisplay->fetch();
 
 
-$imgUpload = $dataDisplay['image_page'];
+$imgUpload = isset($dataDisplay['image_page']) ? $dataDisplay['image_page'] : null;
 if(isset($_POST['submit'])){
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
@@ -120,7 +120,13 @@ if(isset($_POST['submit'])){
 
 
                     </form>
+                    <?php 
+                        if($_SESSION['niveau'] == 'admin'){
+                            ?>
                         <a class="button btndelete" href="listepages.php?delete=y&id=<?= $_GET['id']?>">Supprimer la page</a>
+                            <?php
+                        }
+                    ?>
 
         <?php
                     }
@@ -128,11 +134,11 @@ if(isset($_POST['submit'])){
                 // Sinon refuser l'acces 
                 if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$dataDisplay){ 
         ?>
-            <p>Aucun page sélectionnée.</p>
+            <p>Aucune page sélectionnée.</p>
         <?php 
                 }
                 // Sinon refuser l'acces 
-                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] == "moderateur"){ 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
         ?>
             <p>Access denied</p>
         <?php 

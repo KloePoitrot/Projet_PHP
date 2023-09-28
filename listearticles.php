@@ -69,7 +69,7 @@ $message = null;
                         <td><img class="avatar small" src="<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
                         <td><?= $result["date_article"]?></td>
                         <td><?= $result["categorie_article"]?></td>
-                        <td><a href="detailarticle.php?id=<?= $result['id_article']?>">Voir l'article</a></td>
+                        <td><a class="button" href="detailarticle.php?id=<?= $result['id_article']?>">Voir l'article</a></td>
                     </tr>
                 <?php
                 }
