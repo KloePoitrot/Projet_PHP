@@ -40,7 +40,7 @@ if(isset($_POST['submit'])){
             ));
 
 
-            $message = "<p class='success'>Formulaire envoyé</p>";
+            $message = "<p class='success'>Catégorie créée!</p>";
         }
     }
 }

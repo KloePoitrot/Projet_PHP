@@ -27,6 +27,7 @@ $message = null;
         ?>
         
             <h1 class="header">Liste des catégories</h1>
+            <a class="button" href="newcategorie.php">Créer une catégorie</a>
             
             <?php 
                 require_once "connect.php";
@@ -73,7 +74,7 @@ $message = null;
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>
-                <table> 
+                <table class="margin-t"> 
                     <tbody>
                 <?= $message?>
                 <?php

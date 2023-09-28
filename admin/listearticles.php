@@ -27,6 +27,7 @@ $message = null;
         ?>
         
             <h1 class="header">Liste des articles</h1>
+            <a class="button" href="newarticle.php">Créer un article</a>
             
             <?php 
                 require_once "connect.php";
@@ -56,7 +57,7 @@ $message = null;
                 ?>
                 <?= $message?>
                     
-                <table>
+                <table class="margin-t">
                     <thead>
                         <tr>
                             <th>ID</th>

@@ -6,6 +6,7 @@ $isFormOk = true;
 $imgUpload = "";
 $message = null;
 
+
 // Test d'envoi du formulaire
 if(isset($_POST['submit'])){
 
@@ -22,8 +23,8 @@ if(isset($_POST['submit'])){
     }
 
     // Test de la categorie
-    if(empty($_POST['categorie']) || strlen($_POST['categorie']) < 5){
-        $message .= "<p class='warning'>La catégorie n'est pas valable. (5 caractères minimum)</p>";
+    if($_POST['categorie'] == 'null'){
+        $message .= "<p class='warning'>Veuillez selectionner une catégorie.</p>";
         $isFormOk = false;
     }
 
@@ -55,7 +56,7 @@ if(isset($_POST['submit'])){
 
     // Si le formulaire est correcte
     if($isFormOk){
-        require_once "connect.php";
+        require "connect.php";
         $request = "INSERT INTO articles(titre_article, image_article, contenu_article, date_article, categorie_article, statut_article) VALUES(:titre, :img, :contenu, :dateupload, :categorie, :statut)";
         $request = $db->prepare($request);
         $request->execute(array(
@@ -88,7 +89,9 @@ if(isset($_POST['submit'])){
             // Verifie si on est connecté
             if(!empty($_SESSION['niveau'])){
                 // Verifie si le compte est de niveau admin ou moderateur
-                if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
+                if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){  
+                require "connect.php";
+
         ?>
         
             <h1 class="header">Créer un article</h1>
@@ -96,13 +99,23 @@ if(isset($_POST['submit'])){
         <form action="" method="post" enctype="multipart/form-data">
             <input type="text" name="title" placeholder="Titre">
             <textarea name="contenu" placeholder="Contenu de votre article"></textarea>
-            <select name="statut" id="statut">
-                <option value="null">--- Selectionner un selectionner une catégorie ---</option>
-                <option value="brouillon">Brouillon</option>
-                <option value="en attente">Final</option>
+            
+            <select name="categorie" id="categorie">
+                <option value="null">--- Selectionnez une catégorie ---</option>
+
+                <?php 
+                $datacat = $db->prepare("SELECT id_cat, nom_cat FROM categories ORDER BY id_cat DESC");
+                $datacat->execute();
+                $resultscat = $datacat->fetchAll();
+                foreach($resultscat as $resultcat){
+                ?>
+                <option value="<?= $resultcat['nom_cat']?>"><?= $resultcat['nom_cat']?></option>
+                <?php
+                }
+                ?>
             </select>
             <select name="statut" id="statut">
-                <option value="null">--- Selectionner un statut ---</option>
+                <option value="null">--- Selectionnez un statut ---</option>
                 <option value="brouillon">Brouillon</option>
                 <option value="en attente">Final</option>
             </select>

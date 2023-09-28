@@ -29,25 +29,6 @@ if(isset($_POST['submit'])){
         $isFormOk = false;
     }
 
-    // test de la catégorie
-    if(empty($_POST['categorie']) || strlen($_POST['categorie']) < 5){
-        $message .= "<p class='warning'>La catégorie n'est pas valable. (5 caractères minimum)</p>";
-        $isFormOk = false;
-    }
-
-    // Test du statut
-    if($_POST['statut'] == 'null'){
-        $message .= "<p class='warning'>Veuillez selectionner un statut.</p>";
-        $isFormOk = false;
-    }
-
-    // Test du statut
-    if($_POST['categorie'] == 'null'){
-        $message .= "<p class='warning'>Veuillez selectionner une catégorie.</p>";
-        $isFormOk = false;
-    }
-
-
     // Test de l'image
     if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
         if($isFormOk){
@@ -125,8 +106,8 @@ if(isset($_POST['submit'])){
                             <input type="text" name="title" value="<?= $dataDisplay['titre_article']?>">
                             <label for="pseudo">Contenu:</label>
                             <textarea name="contenu"><?= $dataDisplay['contenu_article']?></textarea>
-                            <label for="pseudo">Catégorie:</label>
-                            <select name="categorie" id="statut">
+                            <label for="categorie">Catégorie:</label>
+                            <select name="categorie" id="categorie">
                                 <option value="<?= $dataDisplay['categorie_article']?>"><?= $dataDisplay['categorie_article']?></option>
                                 <?php 
                                 $datacat = $db->prepare("SELECT id_cat, nom_cat FROM categories ORDER BY id_cat DESC");
