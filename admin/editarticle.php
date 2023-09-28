@@ -151,7 +151,7 @@ if(isset($_POST['submit'])){
                             <input type="hidden" name="id" value="<?= $_GET['id']?>">
                             <input type="submit" name="submit" value="Envoyer">
                         </form>
-                        <a class="button btndelete" href="listepages.php?delete=y&id=<?= $_GET['id']?>">Supprimer l'article</a>
+                        <a class="button btndelete" href="listearticles.php?delete=y&id=<?= $_GET['id']?>">Supprimer l'article</a>
 
         <?php
                     }
