@@ -27,6 +27,7 @@ $dataDisplay = $reqDisplay->fetch();
             font-weight:900;
         }
     </style>
+    <link rel="stylesheet" href="css/global.css">
     <title>Profile</title>
 </head>
 <body>
@@ -35,9 +36,9 @@ $dataDisplay = $reqDisplay->fetch();
         <?php 
             if(isset($_SESSION['id']) && $dataDisplay){
         ?>
-        <h1>Profil utilisateur</h1>
-        <div>
-            <img src="<?= $dataDisplay['avatar_user'] ?>" alt="Avatar de <?= $dataDisplay['pseudo_user'] ?>">
+        <h1 class="header">Profil utilisateur</h1>
+        <div class="flex margin-b">
+            <img class="avatar" src="<?= $dataDisplay['avatar_user'] ?>" alt="Avatar de <?= $dataDisplay['pseudo_user'] ?>">
             <ul>
                 <li><span class="bold">Pseudo</span> • <?= $dataDisplay['pseudo_user'] ?></li>
                 <li><span class="bold">Nom</span> • <?= $dataDisplay['nom_user'] ?></li>
@@ -46,7 +47,7 @@ $dataDisplay = $reqDisplay->fetch();
             </ul>
         </div>
 
-        <a href="editprofil.php">Modifier le profil</a>
+        <a class="button" href="editprofil.php">Modifier le profil</a>
         <?php
             }
         ?>
@@ -54,7 +55,7 @@ $dataDisplay = $reqDisplay->fetch();
         <?php 
             if(!isset($_SESSION['id']) && !$dataDisplay){
         ?>
-        <p>Access denied</p>
+        <p class="warning">Access denied</p>
         <?php
             }
         ?>

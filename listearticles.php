@@ -8,6 +8,7 @@ $message = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/global.css">
     <title>Liste articles</title>
     <style>
         img{
@@ -18,7 +19,7 @@ $message = null;
 <body>
     <?php include_once "modules/header.php"; ?>
         <main>
-            <h1>Liste des articles</h1>
+            <h1 class="header">Liste des articles</h1>
             
             <?php 
                 require_once "admin/connect.php";
@@ -32,11 +33,11 @@ $message = null;
                     $data->execute(array(
                         'id' => $idDelete,
                     ));
-                    $message = "<p>Article supprimé!</p>";
+                    $message = "<p class='success'>Article supprimé!</p>";
                 }
 
                 if($_SESSION['niveau'] != "admin"){
-                    $message = "<p>Action non-authorisé.</p>";
+                    $message = "<p class='warning'>Action non-authorisé.</p>";
                 }
                 }
 
@@ -65,7 +66,7 @@ $message = null;
                 ?>
                     <tr>
                         <td><?= $result["titre_article"]?></td>
-                        <td><img src="<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
+                        <td><img class="avatar small" src="<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
                         <td><?= $result["date_article"]?></td>
                         <td><?= $result["categorie_article"]?></td>
                         <td><a href="detailarticle.php?id=<?= $result['id_article']?>">Voir l'article</a></td>

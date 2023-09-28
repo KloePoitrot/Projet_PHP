@@ -17,6 +17,7 @@ if(isset($_SESSION['token'])){
                 <li><a href="../admin/dashboard.php">Dashboard</a></li>
                 <li><a href="../admin/listepages.php">Pages</a></li>
                 <li><a href="../admin/listearticles.php">Articles</a></li>
+                <li><a href="../admin/listecategories.php">Catégories</a></li>
                 <li><a href="../admin/listeutilisateurs.php">Utilisateurs</a></li>
             <?php 
                     }

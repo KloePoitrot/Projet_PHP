@@ -5,13 +5,13 @@ $isFormOk = true;
 if(isset($_POST['submit'])){
     // test si le pseudo ou mail est correct
     if(empty($_POST['info']) || strlen($_POST['info']) < 5){
-        $message = "<p>Pseudo ou email invalide (5 caractères minimum)</p>";
+        $message = "<p class='warning'>Pseudo ou email invalide (5 caractères minimum)</p>";
         $isFormOk .= false;
     }
 
     // Teste si le mot de pass est correct
     if(empty($_POST['passw']) || strlen($_POST['passw']) < 5){
-        $message .= "<p>Mot de passe invalide (5 caractères minimum)</p>";
+        $message .= "<p class='warning'>Mot de passe invalide (5 caractères minimum)</p>";
         $isFormOk = false;
     }
 
@@ -30,7 +30,7 @@ if(isset($_POST['submit'])){
 
         if(!$data){
             // Le mail ou pseudo ne correspondent pas
-            $message = "<p>Une erreur est survenue, veuillez vérifier vos informations.</p>";
+            $message = "<p class='warning'>Une erreur est survenue, veuillez vérifier vos informations.</p>";
         }
 
         if($data){
@@ -56,12 +56,13 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global.css">
     <title>Connexion admin</title>
 </head>
 <body>
     <?php include_once "../modules/headeradmin.php" ?>
     <main>
-        <h1>Connexion admin</h1>
+        <h1 class="header">Connexion admin</h1>
         <?= $message?>
         <?php 
         // Si on est pas connecté, affiché le formulaire de connexion

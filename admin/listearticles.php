@@ -8,6 +8,7 @@ $message = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global.css">
     <title>Liste articles</title>
     <style>
         img{
@@ -16,8 +17,8 @@ $message = null;
     </style>
 </head>
 <body>
-    <main>
     <?php include_once "../modules/headeradmin.php"; ?>
+    <main>
     <?php 
             // Verifie si on est connecté
             if(!empty($_SESSION['niveau'])){
@@ -25,7 +26,7 @@ $message = null;
                 if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
         ?>
         
-            <h1>Liste des articles</h1>
+            <h1 class="header">Liste des articles</h1>
             
             <?php 
                 require_once "connect.php";
@@ -39,11 +40,11 @@ $message = null;
                     $data->execute(array(
                         'id' => $idDelete,
                     ));
-                    $message = "<p>Article supprimé!</p>";
+                    $message = "<p class='success'>Article supprimé!</p>";
                 }
 
                 if($_SESSION['niveau'] != "admin"){
-                    $message = "<p>Action non-authorisé.</p>";
+                    $message = "<p class='warning'>Action non-authorisé.</p>";
                 }
                 }
 
@@ -73,13 +74,13 @@ $message = null;
                     <tr>
                         <td><?= $result["id_article"]?></td>
                         <td><?= $result["titre_article"]?></td>
-                        <td><img src="../<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
+                        <td><img class="avatar small" src="../<?= $result["image_article"]?>" alt="image de l'article <?= $result["id_article"]?>"></td>
                         <td><?= $result["date_article"]?></td>
                         <td><?= $result["categorie_article"]?></td>
                         <td><?= $result["statut_article"]?></td>
-                        <td><a href="">Afficher</a></td>
-                        <td><a href="editarticle.php?id=<?= $result["id_article"]?>">Editer</a></td>
-                        <td><a href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
+                        <td><a class="button" href="../detailarticle.php?id=<?= $result["id_article"]?>">Afficher</a></td>
+                        <td><a class="button" href="editarticle.php?id=<?= $result["id_article"]?>">Editer</a></td>
+                        <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_article"]?>">Supprimer</a></td>
                     </tr>
                 <?php
                 }

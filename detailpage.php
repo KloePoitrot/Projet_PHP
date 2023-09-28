@@ -17,21 +17,22 @@ $dataDisplay = $reqDisplay->fetch();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/global.css">
     <title>Page</title>
 </head>
 <body>
-    <main>
     <?php include_once "modules/header.php"; ?>
+    <main>
     
     <?php 
     if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT) && $dataDisplay){
         ?>
-    <article>
+    <article class="imgArticle">
+        <img src="<?= $dataDisplay['image_page'] ?>" alt="Image de la page <?= $dataDisplay['titre_page'] ?>">
         <div>
-            <h1><?= $dataDisplay['titre_page'] ?></h1>
+            <h1 class="header"><?= $dataDisplay['titre_page'] ?></h1>
             <p><?= $dataDisplay['contenu_page'] ?></p>
         </div>    
-        <img src="<?= $dataDisplay['image_page'] ?>" alt="Image de la page <?= $dataDisplay['titre_page'] ?>">
     </article>
 
 <?php }
@@ -40,8 +41,8 @@ if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$da
 
 ?>
 
-    <h2>Erreur!</h2>
-    <p>Aucune page sélectionné. <a href="index.php">Accueil</a></p>
+    <h2 class="header">Erreur!</h2>
+    <p class='warning'>Aucune page sélectionné. <a href="index.php">Accueil</a></p>
 
 <?php 
 } 

@@ -11,40 +11,39 @@ if(isset($_POST['submit'])){
 
     // Test du titre
     if(empty($_POST['title']) || strlen($_POST['title']) < 5){
-        $message .= "<p>Votre titre n'est pas assez long. (5 caractères minimum)</p>";
+        $message .= "<p class='warning'>Votre titre n'est pas assez long. (5 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test du contenu
     if(empty($_POST['contenu']) || strlen($_POST['contenu']) < 120){
-        $message .= "<p>Votre contenu n'est pas assez long. (120 caractères minimum)</p>";
+        $message .= "<p class='warning'>Votre contenu n'est pas assez long. (120 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test du statut
     if($_POST['statut'] == 'null'){
-        $message .= "<p>Veuillez selectionner un statut.</p>";
+        $message .= "<p class='warning'>Veuillez selectionner un statut.</p>";
         $isFormOk = false;
     }
 
 
     // Test de l'image
     if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
-
-        // Verification du mime
-        $info = getimagesize($_FILES['image']['tmp_name']);
-        // Il y a bien un fichier, verifie l'extention de l'image
-        if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
-            // Genere un nom de fichier
-            $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            move_uploaded_file($_FILES['image']['tmp_name'], '../images/pages/'.$nom_fichier);
-            $imgUpload = 'images/pages/'.$nom_fichier;
-        } else {
-            // sinon cest un echec
-            $message = "<p>L'image uploadée est invalide.</p>";
+        if($isFormOk){
+            // Verification du mime
+            $info = getimagesize($_FILES['image']['tmp_name']);
+            // Il y a bien un fichier, verifie l'extention de l'image
+            if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
+                // Genere un nom de fichier
+                $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                move_uploaded_file($_FILES['image']['tmp_name'], '../images/pages/'.$nom_fichier);
+                $imgUpload = 'images/pages/'.$nom_fichier;
+            } else {
+                // sinon cest un echec
+                $message = "<p class='warning'>L'image uploadée est invalide.</p>";
+            }
         }
-    } else {
-        $message = '<p>le fichier doit etre au format jpeg ou png.</p>';
     }
 
 
@@ -61,7 +60,7 @@ if(isset($_POST['submit'])){
             "statut" => $_POST['statut'],
         ));
 
-        $message = "<p>Page créée!</p>";
+        $message = "<p class='success'>Page créée!</p>";
     }
 }
 ?>
@@ -71,12 +70,21 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global.css">
     <title>Créer une page</title>
 </head>
 <body>
+    <?php include_once "../modules/headeradmin.php"; ?>
     <main>
-        <?php include_once "../modules/headeradmin.php"; ?>
-        <h1>Créer une page</h1>
+
+    <?php 
+            // Verifie si on est connecté
+            if(!empty($_SESSION['niveau'])){
+                // Verifie si le compte est de niveau admin ou moderateur
+                if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
+        ?>
+        
+        <h1 class="header">Créer une page</h1>
         <?= $message?>
         <form action="" method="post" enctype="multipart/form-data">
             <input type="text" name="title" placeholder="Titre">
@@ -88,9 +96,25 @@ if(isset($_POST['submit'])){
             </select>
             <input type="file" name="image" id="image">
             <input type="submit" name="submit" value="Envoyer">
-
-
         </form>
+
+        <?php
+                }
+                // Sinon refuser l'acces 
+                if($_SESSION['niveau'] != "admin" && $_SESSION['niveau'] != "moderateur"){ 
+        ?>
+            <p>Access denied</p>
+        <?php 
+                }
+            }
+
+            // Refuser l'acces si personne n'est connecté
+            if(empty($_SESSION['niveau'])){
+        ?>
+            <p>Access denied</p>
+        <?php 
+            }
+        ?>
     </main>
 </body>
 </html>

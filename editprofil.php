@@ -19,45 +19,44 @@ $dataDisplay = $reqDisplay->fetch();
 if(isset($_POST['submit'])){
     // Test d'envoi du pseudo
     if(empty($_POST['pseudo']) || strlen($_POST['pseudo']) < 5){
-        $message .= "<p>Le pseudo est incorrecte (5 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le pseudo est incorrecte (5 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du nom
     if(empty($_POST['nom']) || strlen($_POST['nom']) < 2){
-        $message .= "<p>Le nom est invalide (2 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le nom est invalide (2 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du prénom
     if(empty($_POST['prenom']) || strlen($_POST['prenom']) < 2){
-        $message .= "<p>Le prénom est invalide (2 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le prénom est invalide (2 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du mail
     if(empty($_POST['mail']) || !filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)){
-        $message .= "<p>Le mail est invalide</p>";
+        $message .= "<p class='warning'>Le mail est invalide</p>";
         $isFormOk = false;
     }
 
     // Test de l'image
     if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
-
-        // Verification du mime
-        $info = getimagesize($_FILES['image']['tmp_name']);
-        // Il y a bien un fichier, verifie l'extention de l'image
-        if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
-            // Genere un nom de fichier
-            $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            move_uploaded_file($_FILES['image']['tmp_name'], 'images/pages/'.$nom_fichier);
-            $imgUpload = 'images/pages/'.$nom_fichier;
-        } else {
-            // sinon cest un echec
-            $message = "<p>L'image uploadée est invalide.</p>";
+        if($isFormOk){
+            // Verification du mime
+            $info = getimagesize($_FILES['image']['tmp_name']);
+            // Il y a bien un fichier, verifie l'extention de l'image
+            if($info && ($info['mime'] == 'image/jpeg' || $info['mime'] == 'image/jpg' || $info['mime'] == 'image/png')){
+                // Genere un nom de fichier
+                $nom_fichier = uniqid() . '.' . pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                move_uploaded_file($_FILES['image']['tmp_name'], '../images/pages/'.$nom_fichier);
+                $imgUpload = 'images/pages/'.$nom_fichier;
+            } else {
+                // sinon cest un echec
+                $message = "<p class='warning'>L'image uploadée est invalide.</p>";
+            }
         }
-    } else {
-        $message = '<p>le fichier doit etre au format jpeg ou png.</p>';
     }
 
     // Si tout est ok
@@ -78,7 +77,7 @@ if(isset($_POST['submit'])){
 
         if($data){
             // Le mail ou pseudo sont deja utilisé
-            $message = "<p>Une erreur est survenue, veuillez vérifier vos informations.</p>";
+            $message = "<p class='warning'>Une erreur est survenue, veuillez vérifier vos informations.</p>";
         }
 
         if(!$data){
@@ -99,7 +98,7 @@ if(isset($_POST['submit'])){
                 "pass" => $password,
             ));
 
-            $message = "<p>Info modifié!</p>";
+            $message = "<p class='success'>Info modifié!</p>";
         }
     }
 }
@@ -110,6 +109,7 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/global.css">
     <title>Profile</title>
 </head>
 <body>
@@ -118,7 +118,7 @@ if(isset($_POST['submit'])){
         <?php 
             if(isset($_SESSION['id']) && $dataDisplay){
         ?>
-        <h1>Profil utilisateur (Modifier)</h1>
+        <h1 class="header">Profil utilisateur (Modifier)</h1>
         <?= $message?>
         <form action="" method="post" enctype="multipart/form-data">
             <label for="pseudo">Pseudo:</label>

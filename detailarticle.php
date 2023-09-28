@@ -17,24 +17,25 @@ $dataDisplay = $reqDisplay->fetch();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/global.css">
     <title>Article</title>
 </head>
 <body>
-    <main>
     <?php include_once "modules/header.php"; ?>
+    <main>
     
     <?php 
     if(isset($_GET['id']) && filter_var($id, FILTER_VALIDATE_INT) && $dataDisplay){
         ?>
-    <article>
+    <article class="imgArticle">
+        <img src="<?= $dataDisplay['image_article'] ?>" alt="Image de l'article <?= $dataDisplay['titre_article'] ?>">
         <div>
-            <h1><?= $dataDisplay['titre_article'] ?></h1>
+            <h1 class="header"><?= $dataDisplay['titre_article'] ?></h1>
+            <p class="margin-b">Catégorie: <?= $dataDisplay['categorie_article'] ?></p>
             <p><?= $dataDisplay['contenu_article'] ?></p>
         </div>    
-        <img src="<?= $dataDisplay['image_article'] ?>" alt="Image de l'article <?= $dataDisplay['titre_article'] ?>">
     </article>
     
-    <p>Catégorie: <?= $dataDisplay['categorie_article'] ?></p>
 
 
 <?php }
@@ -44,7 +45,7 @@ if(!isset($_GET['id']) || filter_var($id, FILTER_VALIDATE_INT) === false || !$da
 ?>
 
     <h2>Erreur!</h2>
-    <p>Aucun article sélectionné. <a href="index.php">Accueil</a></p>
+    <p class='warning'>Aucun article sélectionné. <a href="index.php">Accueil</a></p>
 
 <?php 
 } 

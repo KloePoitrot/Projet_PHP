@@ -8,25 +8,31 @@ $isFormOk = true;
 if(isset($_POST['submit'])){
     // Test d'envoi du pseudo
     if(empty($_POST['pseudo']) || strlen($_POST['pseudo']) < 5){
-        $message .= "<p>Le pseudo est incorrecte (5 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le pseudo est incorrecte (5 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du nom
     if(empty($_POST['nom']) || strlen($_POST['nom']) < 2){
-        $message .= "<p>Le nom est invalide (2 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le nom est invalide (2 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du prénom
     if(empty($_POST['prenom']) || strlen($_POST['prenom']) < 2){
-        $message .= "<p>Le prénom est invalide (2 caractères minimum)</p>";
+        $message .= "<p class='warning'>Le prénom est invalide (2 caractères minimum)</p>";
         $isFormOk = false;
     }
 
     // Test d'envoi du mail
     if(empty($_POST['mail']) || !filter_var($_POST['mail'], FILTER_VALIDATE_EMAIL)){
-        $message .= "<p>Le mail est invalide</p>";
+        $message .= "<p class='warning'>Le mail est invalide</p>";
+        $isFormOk = false;
+    }
+
+    // Test d'envoi du niveau de compte
+    if($_POST['niveaucompte'] == 'null'){
+        $message .= "<p class='warning'>Veuillez selectionner un niveau de comtpe.</p>";
         $isFormOk = false;
     }
 
@@ -46,7 +52,7 @@ if(isset($_POST['submit'])){
             "niveau" => $_POST['niveaucompte'],
         ));
 
-        $message = "<p>Utilisateur modifié!</p>";
+        $message = "<p class='success'>Utilisateur modifié!</p>";
     
     }
 }
@@ -64,6 +70,7 @@ if(isset($_POST['submit'])){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global.css">
     <title>Liste pages</title>
     <style>
         img{
@@ -72,8 +79,8 @@ if(isset($_POST['submit'])){
     </style>
 </head>
 <body>
-    <main>
     <?php include_once "../modules/headeradmin.php"; ?>
+    <main>
     <?php 
             // Verifie si on est connecté
             if(!empty($_SESSION['niveau'])){
@@ -82,9 +89,9 @@ if(isset($_POST['submit'])){
                     if(isset($_GET['id']) && $dataDisplay){
             ?>
         
-            <h1>Modification de l'utilisateur</h1>
+            <h1 class="header">Modification de l'utilisateur</h1>
             <?= $message?>
-            <form action="" method="post">
+            <form class="margin-b" action="" method="post">
                 <label for="pseudo">Pseudo:</label>
                 <input type="text" name="pseudo" value="<?= $dataDisplay['pseudo_user']?>">
                 <label for="nom">Nom:</label>
@@ -94,12 +101,17 @@ if(isset($_POST['submit'])){
                 <label for="mail">Email:</label>
                 <input type="text" name="mail" value="<?= $dataDisplay['mail_user']?>">
                 <label for="niveaucompte">Niveau Compte:</label>
-                <input name="niveaucompte" value="<?= $dataDisplay['niveau_compte']?>">
+                <select name="niveaucompte" id="niveaucompte">
+                    <option value="<?= $dataDisplay['niveau_compte']?>"><?= $dataDisplay['niveau_compte']?></option>
+                    <option value="membre">Membre</option>
+                    <option value="moderateur">Moderateur</option>
+                    <option value="admin">Admin</option>
+                </select>
                 <input type="hidden" name="id" value="<?= $_GET['id']?>">
                 <input type="submit" name="submit" value="Modifier">
             </form>
 
-            <a href="listeutilisateurs.php?delete=y&id=<?= $dataDisplay["id_user"]?>">Supprimer l'utilisateur</a>
+            <a class="button btndelete" href="listeutilisateurs.php?delete=y&id=<?= $dataDisplay["id_user"]?>">Supprimer l'utilisateur</a>
 
         <?php
                     }

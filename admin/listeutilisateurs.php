@@ -8,6 +8,7 @@ $message = null;
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/global.css">
     <title>Liste Utilisateurs</title>
     <style>
         img{
@@ -25,7 +26,7 @@ $message = null;
                 if($_SESSION['niveau'] == "admin" || $_SESSION['niveau'] == "moderateur" ){    
         ?>
         
-            <h1>Liste des comptes utilisateur</h1>
+            <h1 class="header">Liste des comptes utilisateur</h1>
             <?php 
                 require_once "connect.php";
 
@@ -38,11 +39,11 @@ $message = null;
                         $data->execute(array(
                             'id' => $idDelete,
                         ));
-                        $message = "<p>Utilisateur supprimé!</p>";
+                        $message = "<p class='success'>Utilisateur supprimé!</p>";
                     }
                     
                     if($_SESSION['niveau'] != "admin"){
-                        $message = "<p>Action non-authorisé.</p>";
+                        $message = "<p class='warning'>Action non-authorisé.</p>";
                     }
                 }
 
@@ -73,14 +74,14 @@ $message = null;
                 ?>
                     <tr>
                         <td><?= $result["id_user"]?></td>
-                        <td><img src="../<?= $result["avatar_user"]?>" alt="avatar de l'utilisateur <?= $result["pseudo_user"]?>"></td>
+                        <td><img class="avatar small" src="../<?= $result["avatar_user"]?>" alt="avatar de l'utilisateur <?= $result["pseudo_user"]?>"></td>
                         <td><?= $result["pseudo_user"]?></td>
                         <td><?= $result["nom_user"]?></td>
                         <td><?= $result["prenom_user"]?></td>
                         <td><?= $result["mail_user"]?></td>
                         <td><?= $result["niveau_compte"]?></td>
-                        <td><a href="editutilisateur.php?id=<?= $result["id_user"]?>">Modifier</a></td>
-                        <td><a href="?delete=y&id=<?= $result["id_user"]?>">Supprimer</a></td>
+                        <td><a class="button" href="editutilisateur.php?id=<?= $result["id_user"]?>">Modifier</a></td>
+                        <td><a class="button btndelete" href="?delete=y&id=<?= $result["id_user"]?>">Supprimer</a></td>
                     </tr>
                 <?php
                 }
