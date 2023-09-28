@@ -48,7 +48,7 @@ $message = null;
                 }
 
                 // Affichage des utilisateurs
-                $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users");
+                $data = $db->prepare("SELECT id_user, nom_user, prenom_user, mail_user, pseudo_user, avatar_user, niveau_compte FROM users ORDER BY id_user DESC");
                 $data->execute();
                 $results = $data->fetchAll();
                 ?>

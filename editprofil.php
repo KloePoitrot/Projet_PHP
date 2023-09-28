@@ -41,6 +41,18 @@ if(isset($_POST['submit'])){
         $isFormOk = false;
     }
 
+    // Test d'envoi du mot de passe
+    if(!empty($_POST['pssw'])){
+        if(strlen($_POST['pssw']) < 5){
+            $message .= "<p class='warning'>Le mot de passe est invalide (5 caractères minimum)</p>";
+            $isFormOk = false;
+        }
+        if($_POST['psswconf'] !== $_POST['pssw']){
+            $message .= "<p class='warning'>Les mots de passe ne correspondent pas</p>";
+            $isFormOk = false;
+        }
+    }
+
     // Test de l'image
     if(isset($_FILES['image']) && $_FILES['image']['error'] == UPLOAD_ERR_OK){
         if($isFormOk){
@@ -129,8 +141,10 @@ if(isset($_POST['submit'])){
             <input type="text" name="prenom" value="<?= $dataDisplay['prenom_user']?>">
             <label for="mail">Email:</label>
             <input type="text" name="mail" value="<?= $dataDisplay['mail_user']?>">
-            <label for="mail">Mot de passe:</label>
+            <label for="pssw">Mot de passe:</label>
             <input type="password" name="pssw">
+            <label for="psswconf">Confirmation de mot de passe:</label>
+            <input type="password" name="psswconf">
             <label for="image">Changer l'image:</label>
             <input type="file" name="image" id="image" value>
             <input type="hidden" name="id" value="<?= $_SESSION['id']?>">
